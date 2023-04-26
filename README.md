@@ -8,9 +8,9 @@
 
 To install `vrpn_client_ros`, you can clone the repository into your workspace and build it using colcon:
 
-```bash
+```console
 cd <path/to/ws>/src
-git clone https://github.com/hidro-iri/vrpn_client_ros
+git clone https://github.com/hidro-iri/vrpn_client_ros.git
 cd ..
 colcon build --packages-select vrpn_client_ros
 ```
