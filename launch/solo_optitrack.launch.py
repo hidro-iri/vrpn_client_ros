@@ -75,6 +75,10 @@ def generate_launch_description():
     # remappings=[
     #   ('~/ros_interface_name', LaunchConfiguration('ros_interface_name_ns')),
     # ]
+    remappings=[
+      ('/pose_in', [LaunchConfiguration('robot_name'), '_fur_ot/pose']),
+      ('/pose_out', [LaunchConfiguration('robot_name'), '_flu_ot/pose']),
+    ]
   )
 
   ld.add_action(vrpn_config_file_arg)
