@@ -55,6 +55,17 @@ add_executable(vrpn_client_node src/vrpn_client_node.cpp)
 target_link_libraries(vrpn_client_node vrpn_client_ros)
 ament_target_dependencies(vrpn_client_node rclcpp std_msgs geometry_msgs tf2 tf2_ros tf2_kdl tf2_geometry_msgs VRPN)
 
+# add executables
+add_executable(transform_fur_odom_to_flu_node src/transform_fur_odom_to_flu.cpp)
+
+# add executable dependecies
+target_link_libraries(transform_fur_odom_to_flu_node vrpn_client_ros)
+ament_target_dependencies(transform_fur_odom_to_flu_node rclcpp geometry_msgs tf2_geometry_msgs tf2_ros)
+# target_include_directories(transform_fur_odom_to_flu_node PUBLIC
+#   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+#   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
+# )
+
 install(DIRECTORY
   launch
   DESTINATION share/${PROJECT_NAME}/
@@ -74,6 +85,7 @@ install(TARGETS
 install(TARGETS
   vrpn_tracker_node
   vrpn_client_node
+  transform_fur_odom_to_flu_node
   DESTINATION lib/${PROJECT_NAME}
 )
 

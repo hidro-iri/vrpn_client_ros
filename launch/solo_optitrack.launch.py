@@ -63,6 +63,20 @@ def generate_launch_description():
     }.items(),
   )
 
+  tf_node = Node(
+    package='vrpn_client_ros',
+    executable='transform_fur_odom_to_flu_node',
+    name='transform_fur_odom_to_flu',
+    output=LaunchConfiguration('output'),
+    parameters=[{
+                'robot_name': LaunchConfiguration('robot_name')
+            }],
+    # Uncomment to add ros interfaces remappings
+    # remappings=[
+    #   ('~/ros_interface_name', LaunchConfiguration('ros_interface_name_ns')),
+    # ]
+  )
+
   ld.add_action(vrpn_config_file_arg)
   ld.add_action(robot_name_arg)
   ld.add_action(simulation_arg)
@@ -71,5 +85,6 @@ def generate_launch_description():
   # ld.add_action(ros_interface_name_ns_arg) 
   ld.add_action(vrpn_launch)
   ld.add_action(static_transforms_launch)
+  ld.add_action(tf_node)
 
   return ld
