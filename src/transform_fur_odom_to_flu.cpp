@@ -54,19 +54,19 @@ void TransformFurOdomToFlu::configure_parameters(void)
 void TransformFurOdomToFlu::pose_in_callback(const geometry_msgs::msg::PoseStamped::ConstSharedPtr & msg)
 {
   static bool tf_received = false;
-  std::string from_robot = robot_name_ + "_fur_ot";
-  std::string to_robot  = robot_name_ + "_flu_ot";
-  tf2::Transform tf_world_fur_to_robot_fur;
-  tf2::Transform tf_world_flu_to_robot_flu;
+  std::string robot_fur = robot_name_ + "_fur_ot";
+  std::string robot_flu = robot_name_ + "_flu_ot";
+  tf2::Transform tf_wfur_rfur;
+  tf2::Transform tf_wflu_rflu;
   if (!tf_received)
   {
     try {
       geometry_msgs::msg::TransformStamped t;
-      t = tf_buffer_->lookupTransform("world_flu", "world_fur", tf2::TimePointZero);
-      tf2::fromMsg(t.transform, world_fur_to_flu_);
+      t = tf_buffer_->lookupTransform("world_fur", "world_flu", tf2::TimePointZero);
+      tf2::fromMsg(t.transform, tf_wfur_wflu_);
 
-      t = tf_buffer_->lookupTransform(to_robot, from_robot, tf2::TimePointZero);
-      tf2::fromMsg(t.transform, robot_fur_to_flu_);
+      t = tf_buffer_->lookupTransform(robot_fur, robot_flu, tf2::TimePointZero);
+      tf2::fromMsg(t.transform, tf_rfur_rflu_);
 
       tf_received = true;
       RCLCPP_INFO(this->get_logger(), "Transform from FUR to FLU received");
@@ -80,13 +80,14 @@ void TransformFurOdomToFlu::pose_in_callback(const geometry_msgs::msg::PoseStamp
   if (tf_received)
   {
     // Transform pose from FUR ODOM to FLU
-    tf2::fromMsg(msg->pose, tf_world_fur_to_robot_fur);
+    tf2::fromMsg(msg->pose, tf_wfur_rfur);
 
-    tf_world_flu_to_robot_flu = world_fur_to_flu_.inverse()*tf_world_fur_to_robot_fur*robot_fur_to_flu_;
+    tf_wflu_rflu = tf_wfur_wflu_.inverse()*tf_wfur_rfur*tf_rfur_rflu_;
 
-    geometry_msgs::msg::Transform tf_msg = tf2::toMsg(tf_world_flu_to_robot_flu);
+    geometry_msgs::msg::Transform tf_msg = tf2::toMsg(tf_wflu_rflu);
     
     pose_out_msg_.header = msg->header;
+    pose_out_msg_.header.frame_id = "world_flu";
     pose_out_msg_.pose.position.x = tf_msg.translation.x;
     pose_out_msg_.pose.position.y = tf_msg.translation.y;
     pose_out_msg_.pose.position.z = tf_msg.translation.z;

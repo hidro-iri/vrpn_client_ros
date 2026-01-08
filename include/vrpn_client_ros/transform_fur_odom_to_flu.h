@@ -63,8 +63,8 @@ class TransformFurOdomToFlu : public rclcpp::Node
 
     // [structural arguments]
     std::string robot_name_; ///< Robot name
-    tf2::Transform world_fur_to_flu_; ///< Transform from world to FLU
-    tf2::Transform robot_fur_to_flu_; ///< Transform from robot to FLU
+    tf2::Transform tf_wfur_wflu_; ///< Transform from world to FLU
+    tf2::Transform tf_rfur_rflu_; ///< Transform from robot to FLU
     std::unique_ptr<tf2_ros::Buffer> tf_buffer_; ///< TF2 buffer
     std::shared_ptr<tf2_ros::TransformListener> tf_listener_; ///< TF2
 
