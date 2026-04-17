@@ -71,7 +71,8 @@ find_path(VRPN_INCLUDE_DIR
 	PATHS
 	"${_progfiles}/VRPN"
 	C:/usr/local
-	/usr/local)
+	/usr/local
+	/opt/ros/jazzy)
 
 find_library(VRPN_LIBRARY
 	NAMES
@@ -83,7 +84,8 @@ find_library(VRPN_LIBRARY
 	PATHS
 	"${_progfiles}/VRPN"
 	C:/usr/local
-	/usr/local)
+	/usr/local
+	/opt/ros/jazzy)
 
 find_library(VRPN_SERVER_LIBRARY
 	NAMES
@@ -95,7 +97,8 @@ find_library(VRPN_SERVER_LIBRARY
 	PATHS
 	"${_progfiles}/VRPN"
 	C:/usr/local
-	/usr/local)
+	/usr/local
+	/opt/ros/jazzy)
 
 ###
 # Dependencies
@@ -112,6 +115,9 @@ list(APPEND _deps_check QUATLIB_FOUND)
 if(NOT WIN32)
 	find_package(Threads ${_vrpn_quiet})
 	list(APPEND _deps_libs ${CMAKE_THREAD_LIBS_INIT})
+	if(Threads_FOUND)
+		set(CMAKE_HAVE_THREADS_LIBRARY TRUE)
+	endif()
 	list(APPEND _deps_check CMAKE_HAVE_THREADS_LIBRARY)
 endif()
 
